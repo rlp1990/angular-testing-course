@@ -1,3 +1,4 @@
+import { TestBed } from "@angular/core/testing";
 import { CalculatorService } from "./calculator.service";
 import { LoggerService } from "./logger.service";
 
@@ -14,8 +15,16 @@ describe('CalculatorService', () => {
         // Instantiate fake logger service object using jasmine spy
         loggerSpy = jasmine.createSpyObj('LoggerService', ["log"]);
 
-        // Instantiate calculatorService to test the Component
-        calculator = new CalculatorService(loggerSpy);
+        // To provide dependency injection: CalculatorService, the one provided by jasmine
+        TestBed.configureTestingModule({
+            providers: [
+                CalculatorService,
+                {provide: LoggerService, useValue: loggerSpy}
+            ]
+        });
+
+        // Instantiate calculatorService to test the Component by getting the one previously configured
+        calculator = TestBed.get(CalculatorService);
 
     });
 
