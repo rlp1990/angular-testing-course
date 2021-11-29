@@ -3,13 +3,25 @@ import { LoggerService } from "./logger.service";
 
 describe('CalculatorService', () => {
 
-    it('should add two numbers', () => {
+    // Define services here once to get access to them inside each case 'it'
+    let calculator: CalculatorService,
+        loggerSpy: any;
+
+    beforeEach(() => {
+
+        console.log("Calling beforeEach");
 
         // Instantiate fake logger service object using jasmine spy
-        const logger = jasmine.createSpyObj('LoggerService', ["log"]);
+        loggerSpy = jasmine.createSpyObj('LoggerService', ["log"]);
 
         // Instantiate calculatorService to test the Component
-        const calculator = new CalculatorService(logger);
+        calculator = new CalculatorService(loggerSpy);
+
+    });
+
+    it('should add two numbers', () => {
+
+        console.log("add test");
 
         // Operation Add with the service
         const result = calculator.add(2, 2);
@@ -18,20 +30,22 @@ describe('CalculatorService', () => {
         expect(result).toBe(4);
 
         // Testing that inside logger service, the log method is called only once
-        expect(logger.log).toHaveBeenCalledTimes(1);
+        expect(loggerSpy.log).toHaveBeenCalledTimes(1);
 
     });
 
     it('should substract two numbers', () => {
 
-        // Instantiate calculatorService to test the Component
-        const calculator = new CalculatorService(new LoggerService());
+        console.log("substract test");
 
         // Operation Substract with the service
         const result = calculator.subtract(2, 2);
 
         // Testing service Add functionality
         expect(result).toBe(0, 'unexpected substraction result');
+        
+        // Testing that inside logger service, the log method is called only once
+        expect(loggerSpy.log).toHaveBeenCalledTimes(1);
         
     });
 });
