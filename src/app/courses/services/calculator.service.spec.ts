@@ -5,14 +5,20 @@ describe('CalculatorService', () => {
 
     it('should add two numbers', () => {
 
+        // Instantiate fake logger service object using jasmine spy
+        const logger = jasmine.createSpyObj('LoggerService', ["log"]);
+
         // Instantiate calculatorService to test the Component
-        const calculator = new CalculatorService(new LoggerService());
+        const calculator = new CalculatorService(logger);
 
         // Operation Add with the service
         const result = calculator.add(2, 2);
 
         // Testing service Add functionality
         expect(result).toBe(4);
+
+        // Testing that inside logger service, the log method is called only once
+        expect(logger.log).toHaveBeenCalledTimes(1);
 
     });
 
